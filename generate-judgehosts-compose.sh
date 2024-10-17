@@ -21,7 +21,7 @@ EOF
 for ((i=1; i<=NUM_JUDGEHOSTS; i++))
 do
   # Replace the placeholder {{ID}} with the actual number
-  sed "s/{{ID}}/$i/g" judgehost-dc.template >> judgehost-dc.yml
+  sed "s/{{ID}}/$i/g" judgehost-dc.template.yml >> judgehost-dc.yml
 done
 
 cat <<EOF >> judgehost-dc.yml
