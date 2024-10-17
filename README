@@ -1,0 +1,10 @@
+sudo curl -fsSL https://get.docker.com | bash
+usermod -aG docker ubuntu
+su - ubuntu
+export EMAIL=dev@excelrate.in
+export TRAEFIK_DOMAIN=traefik.test.indiaicpc.in 
+export HASHED_PASSWORD=$(openssl passwd -apr1) #enter traefik password here and save it 
+echo $HASHED_PASSWORD > traefik_pass.txt
+docker stack deploy -c traefik-host.yml traefik
+export PORTAINER_DOMAIN=portainer.test.indiaicpc.in 
+docker stack deploy -c portainer.yml portainer 

@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  judgehost:
+    image: domjudge/judgehost:8.2.3
+    restart: always
+    privileged: true
+    hostname: judgehost
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - judgehost-data:/opt/domjudge/judgehost/judgings/
+    environment:
+      DAEMON_ID: 0
+      DOMSERVER_BASEURL: http://domserver/
+      JUDGEDAEMON_PASSWORD: ${JUDGEHOST_PASSWORD}
+      CONTAINER_TIMEZONE: Asia/Kolkata
+    networks:
+      - domjudge-network      
+
+volumes:
+   judgehost-data:
+     name: judgehost-judgings-data
+
+networks:
+  domjudge-network:
+    name: domjudge-network
+    external: true
