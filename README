@@ -1,10 +1,14 @@
 sudo curl -fsSL https://get.docker.com | bash
 usermod -aG docker ubuntu
 su - ubuntu
+git clone git@github.com:ICPC-India/domjudge-docker.git 
+cd domjudge-docker
 export EMAIL=dev@excelrate.in
 export TRAEFIK_DOMAIN=traefik.test.indiaicpc.in 
 export HASHED_PASSWORD=$(openssl passwd -apr1) #enter traefik password here and save it 
 echo $HASHED_PASSWORD > traefik_pass.txt
-docker stack deploy -c traefik-host.yml traefik
+docker compose -f traefik_dc.yml up
 export PORTAINER_DOMAIN=portainer.test.indiaicpc.in 
-docker stack deploy -c portainer.yml portainer 
+docker compose -f portainer_dc.yml up
+
+

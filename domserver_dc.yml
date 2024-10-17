@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   domserver:
     image: domjudge/domserver:8.2.3
