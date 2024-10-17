@@ -10,10 +10,10 @@ if [ -z "$NUM_JUDGEHOSTS" ]; then
 fi
 
 # Start with an empty docker-compose.yml file
-> judgehost-dc.yml
+> judgehost.yml
 
 # Copy the static parts of the docker-compose.yml file (if any)
-cat <<EOF >> judgehost-dc.yml
+cat <<EOF >> judgehost.yml
 services:
 EOF
 
@@ -21,22 +21,22 @@ EOF
 for ((i=1; i<=NUM_JUDGEHOSTS; i++))
 do
   # Replace the placeholder {{ID}} with the actual number
-  sed "s/{{ID}}/$i/g" judgehost-dc.template.yml >> judgehost-dc.yml
+  sed "s/{{ID}}/$i/g" judgehost.template.yml >> judgehost.yml
 done
 
-cat <<EOF >> judgehost-dc.yml
+cat <<EOF >> judgehost.yml
 volumes:
 EOF
 # Loop through and create judgehost instances
 for ((i=1; i<=NUM_JUDGEHOSTS; i++))
 do  
-cat <<EOF >> judgehost-dc.yml  
+cat <<EOF >> judgehost.yml  
   judgehost-data-$i:
     name: judgehost-data-$i
 EOF
 done
 
-cat <<EOF >> judgehost-dc.yml
+cat <<EOF >> judgehost.yml
 networks:
   domjudge-network:
     name: domjudge-network
@@ -44,4 +44,4 @@ networks:
 EOF
 
 # Now you can use docker-compose up to launch all instances
-docker compose -f judgehost-dc.yml up -d
+docker compose -f judgehost.yml up -d
