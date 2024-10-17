@@ -7,20 +7,20 @@ export EMAIL=dev@excelrate.in
 export TRAEFIK_DOMAIN=traefik.test.indiaicpc.in 
 export HASHED_PASSWORD=$(openssl passwd -apr1) #enter traefik password here and save it 
 echo $HASHED_PASSWORD > traefik_pass.txt
-docker compose -f traefik-dc.yml up -d
+docker compose -f traefik.yml up -d
 export PORTAINER_DOMAIN=portainer.test.indiaicpc.in 
-docker compose -f portainer-dc.yml up -d
+docker compose -f portainer.yml up -d
 export DJ_DB=domjudge #enter domjudge db here 
 export DJ_DB_USER=domjudge #enter domjudge db user here 
 export DJ_DB_PASSWORD=djpw #enter domjudge db password here 
 export DB_ROOT_PASSWORD=rootpw #enter mariadb root password here 
-docker compose -f mariadb-dc.yml up -d
+docker compose -f mariadb.yml up -d
 export DJ_DB=domjudge
 export DJ_DB_USER=domjudge
 export DJ_DB_PASSWORD=djpw
 export DB_ROOT_PASSWORD=rootpw
 export SITES=\`test.indiaicpc.in\`
-docker compose -f domserver-dc.yml up -d
+docker compose -f domserver.yml up -d
 #check the logs of the domserver and copy the admin password and the judgehost password from it and set it in the below line
 export JUDGEHOST_PASSWORD=SOMEPASSWORD
-docker compose -f judgehost-dc.yml up -d
+./generate-judgehosts-compose.sh

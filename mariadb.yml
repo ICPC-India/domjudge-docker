@@ -1,13 +1,7 @@
-DJ_DB = domjudge
-DJ_DB_USER = domjudge
-DJ_DB_PASSWORD = djpw
-DB_ROOT_PASSWORD = rootpw
-
-version: "3.7"
-
 services:
   db:
     image: mariadb:11.2
+    container_name: mariadb
     environment:
       MYSQL_DATABASE: ${DJ_DB}
       MYSQL_USER: ${DJ_DB_USER}
@@ -34,4 +28,3 @@ volumes:
 networks:
   mariadb-network:
     name: mariadb-network
-    attachable: true

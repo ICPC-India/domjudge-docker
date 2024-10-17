@@ -1,5 +1,6 @@
 services:
   portainer:
+    container_name: portainer
     image: portainer/portainer-ce:2.23.0
     command: -H unix:///var/run/docker.sock
     volumes:

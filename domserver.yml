@@ -1,17 +1,8 @@
-
-DJ_DB = domjudge
-DJ_DB_USER = domjudge
-DJ_DB_PASSWORD = djpw
-DB_ROOT_PASSWORD = rootpw
-SITES = `test.indiaicpc.in`
-
-version: "3.7"
-
 services:
   domserver:
     image: domjudge/domserver:8.2.3
     environment:
-      MYSQL_HOST: mariadb_db
+      MYSQL_HOST: db
       MYSQL_DATABASE: ${DJ_DB}
       MYSQL_USER: ${DJ_DB_USER}
       MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
@@ -27,22 +18,19 @@ services:
       - mariadb-network
       - domjudge-network
       - traefik-public
-    deploy:
-      restart_policy:
-        condition: on-failure        
-      labels:
-        - traefik.enable=true
-        - traefik.docker.network=traefik-public
-        - traefik.constraint-label=traefik-public
-        - traefik.http.middlewares.prod-redirect.redirectscheme.scheme=https
-        - traefik.http.routers.domserver-http.rule=Host(${SITES})
-        - traefik.http.routers.domserver-http.entrypoints=http
-        - traefik.http.routers.domserver-http.middlewares=prod-redirect
-        - traefik.http.routers.domserver-https.rule=Host(${SITES})
-        - traefik.http.routers.domserver-https.entrypoints=https
-        - traefik.http.routers.domserver-https.tls=true
-        - traefik.http.routers.domserver-https.tls.certresolver=le
-        - traefik.http.services.domserver.loadbalancer.server.port=80
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.constraint-label=traefik-public
+      - traefik.http.middlewares.prod-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.domserver-http.rule=Host(${SITES})
+      - traefik.http.routers.domserver-http.entrypoints=http
+      - traefik.http.routers.domserver-http.middlewares=prod-redirect
+      - traefik.http.routers.domserver-https.rule=Host(${SITES})
+      - traefik.http.routers.domserver-https.entrypoints=https
+      - traefik.http.routers.domserver-https.tls=true
+      - traefik.http.routers.domserver-https.tls.certresolver=le
+      - traefik.http.services.domserver.loadbalancer.server.port=80
 
 volumes:
   submissions-data:
