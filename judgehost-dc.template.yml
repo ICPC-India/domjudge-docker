@@ -9,7 +9,7 @@
       - judgehost-data-{{ID}}:/opt/domjudge/judgehost/judgings/
     environment:
       DAEMON_ID: "{{ID}}"  # Dynamic DAEMON_ID
-      DOMSERVER_BASEURL: http://domserver
+      DOMSERVER_BASEURL: http://domserver/
       JUDGEDAEMON_PASSWORD: ${JUDGEHOST_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
     networks:
