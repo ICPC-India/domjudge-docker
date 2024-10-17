@@ -7,8 +7,8 @@ export EMAIL=dev@excelrate.in
 export TRAEFIK_DOMAIN=traefik.test.indiaicpc.in 
 export HASHED_PASSWORD=$(openssl passwd -apr1) #enter traefik password here and save it 
 echo $HASHED_PASSWORD > traefik_pass.txt
-docker compose -f traefik_dc.yml up
+docker compose -f traefik-dc.yml up
 export PORTAINER_DOMAIN=portainer.test.indiaicpc.in 
-docker compose -f portainer_dc.yml up
+docker compose -f portainer-dc.yml up
 
 
