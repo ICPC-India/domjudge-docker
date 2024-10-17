@@ -18,22 +18,19 @@ services:
       - mariadb-network
       - domjudge-network
       - traefik-public
-    deploy:
-      restart_policy:
-        condition: on-failure        
-      labels:
-        - traefik.enable=true
-        - traefik.docker.network=traefik-public
-        - traefik.constraint-label=traefik-public
-        - traefik.http.middlewares.prod-redirect.redirectscheme.scheme=https
-        - traefik.http.routers.domserver-http.rule=Host(${SITES})
-        - traefik.http.routers.domserver-http.entrypoints=http
-        - traefik.http.routers.domserver-http.middlewares=prod-redirect
-        - traefik.http.routers.domserver-https.rule=Host(${SITES})
-        - traefik.http.routers.domserver-https.entrypoints=https
-        - traefik.http.routers.domserver-https.tls=true
-        - traefik.http.routers.domserver-https.tls.certresolver=le
-        - traefik.http.services.domserver.loadbalancer.server.port=80
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.constraint-label=traefik-public
+      - traefik.http.middlewares.prod-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.domserver-http.rule=Host(${SITES})
+      - traefik.http.routers.domserver-http.entrypoints=http
+      - traefik.http.routers.domserver-http.middlewares=prod-redirect
+      - traefik.http.routers.domserver-https.rule=Host(${SITES})
+      - traefik.http.routers.domserver-https.entrypoints=https
+      - traefik.http.routers.domserver-https.tls=true
+      - traefik.http.routers.domserver-https.tls.certresolver=le
+      - traefik.http.services.domserver.loadbalancer.server.port=80
 
 volumes:
   submissions-data:

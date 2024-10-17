@@ -13,7 +13,7 @@ services:
       JUDGEDAEMON_PASSWORD: ${JUDGEHOST_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
     networks:
-      - domjudge-network      
+      - domjudge-network
 
 volumes:
    judgehost-data:
