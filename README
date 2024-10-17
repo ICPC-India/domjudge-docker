@@ -21,6 +21,6 @@ export DJ_DB_PASSWORD=djpw
 export DB_ROOT_PASSWORD=rootpw
 export SITES=\`test.indiaicpc.in\`
 docker compose -f domserver-dc.yml up -d
-#check the logs of the domserver and copy the admin password and the judgehost passwrod from it and set it in teh below line
-export JUDGEHOST_PASSWORD=61R79rmIMrhJtGkIuLCuBnT0lOR3oOCp
+#check the logs of the domserver and copy the admin password and the judgehost password from it and set it in the below line
+export JUDGEHOST_PASSWORD=SOMEPASSWORD
 docker compose -f judgehost-dc.yml up -d
