@@ -24,5 +24,24 @@ do
   sed "s/{{ID}}/$i/g" judgehost-dc.template >> judgehost-dc.yml
 done
 
+cat <<EOF >> judgehost-dc.yml
+volumes:
+EOF
+# Loop through and create judgehost instances
+for ((i=1; i<=NUM_JUDGEHOSTS; i++))
+do  
+cat <<EOF >> judgehost-dc.yml  
+  judgehost-data-$i:
+    name: judgehost-data-$i
+EOF
+done
+
+cat <<EOF >> judgehost-dc.yml
+networks:
+  domjudge-network:
+    name: domjudge-network
+    external: true
+EOF
+
 # Now you can use docker-compose up to launch all instances
 docker compose -f judgehost-dc.yml up -d
