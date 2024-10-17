@@ -1,6 +1,7 @@
 services:
   domserver:
     image: domjudge/domserver:8.2.3
+    container_name: domserver
     environment:
       MYSQL_HOST: db
       MYSQL_DATABASE: ${DJ_DB}
