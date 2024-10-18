@@ -1,0 +1,23 @@
+  domserver-{{ID}}:
+    image: domjudge/domserver:8.2.3
+    restart: always
+    privileged: true
+    hostname: judgehost
+    container_name: domserver-{{ID}}  # Dynamic container name
+    volumes:
+      - submissions-data:/opt/domjudge/domserver/submissions/
+      - judgings-data:/opt/domjudge/domserver/judgings/
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: ${DJ_DB}
+      MYSQL_USER: ${DJ_DB_USER}
+      MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      CONTAINER_TIMEZONE: Asia/Kolkata
+      FPM_MAX_CHILDREN: 40
+    ports:
+      - "8081:80"
+    networks:
+      - domjudge-network
+      - mariadb-network
+

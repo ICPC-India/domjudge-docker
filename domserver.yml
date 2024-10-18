@@ -48,3 +48,6 @@ networks:
   traefik-public:
     name: traefik-public
     external: true
+
+deploy:
+  replicas: 2
