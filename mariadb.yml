@@ -11,6 +11,15 @@ services:
     command: 
       --max-connections=1000 
       --max-allowed-packet=512M
+      --performance-schema=ON
+      --join-buffer-size=1M
+      --innodb-buffer-pool-size=256M
+      --innodb-log-file-size=32M
+      --innodb-log-buffer-size=32M
+      --innodb-log-files-in-group=2      
+      --slow-query-log=1
+      --slow-query-log-file=/var/lib/mysql/mariadb-slow.log
+      --long-query-time=1
     volumes:
       - db-data:/var/lib/mysql
     ulimits:
