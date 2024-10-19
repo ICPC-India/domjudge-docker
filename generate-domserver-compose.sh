@@ -37,9 +37,8 @@ if [[ "$RESULT" == *"1"* ]]; then
   echo -e "Database schema is already populated.\nSkipping running the domserver-judge-1 container."
 else
   echo -e "Database schema is not populated.\nRunning domserver-judge-1 container on judge-network."
+  docker compose -f domserver-main.yml up -d
 fi
-
-docker compose -f domserver-main.yml up -d
 
 #Setting up the domserver-web services 
 
