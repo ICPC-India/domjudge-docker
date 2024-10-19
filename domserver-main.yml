@@ -1,7 +1,7 @@
 services:
-  domserver:
+  domserver-judge-1:
     image: domjudge/domserver:8.2.3
-    container_name: domserver
+    container_name: domserver-judge-1
     environment:
       MYSQL_HOST: db
       MYSQL_DATABASE: ${DJ_DB}
@@ -41,7 +41,7 @@ networks:
   mariadb-network:
     name: mariadb-network
     external: true
-  domjudge-network:
+  judge-network:
     name: judge-network
   traefik-public:
     name: traefik-public

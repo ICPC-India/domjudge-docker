@@ -41,7 +41,7 @@ fi
 
 docker compose -f domserver-main.yml up -d
 
-#Setting up the domserver-web compose file 
+#Setting up the domserver-web services 
 
 # Start with an empty docker-compose.yml file
 > domserver.yml
@@ -51,19 +51,47 @@ cat <<EOF >> domserver.yml
 services:
 EOF
 
-current_web_count=docker ps --filter "name=domserver-web-" --format "{{.Names}}" | grep -c "domserver-web-"
+# Function to get the number of currently running web containers
+get_running_web_count() {
+  docker ps --filter "name=domserver-web-" --format "{{.Names}}" | grep -c "domserver-web-"
+}
+
+# Get the number of currently running web containers
+current_web_count=$(get_running_web_count)
 
 # Loop through and create judgehost instances
 for ((i = current_web_count + 1; i <= num_web_containers + current_web_count; i++))
 do
   # Replace the placeholder {{ID}} with the actual number
-  sed "s/{{ID}}/$i/g" domserver.template.yml >> domserver.yml
-  cat >> domserver.yml
+  sed "s/{{ID}}/web-$i/g" domserver.template.yml >> domserver.yml
+  cat <<EOF >> domserver.yml
       - web-network
 
 EOF
 done
 
+#Setting up the domserver-judge services 
+
+# Function to get the number of currently running web containers
+get_running_judge_count() {
+  docker ps --filter "name=domserver-judge-" --format "{{.Names}}" | grep -c "domserver-judge-"
+}
+
+# Get the number of currently running web containers
+current_judge_count=$(get_running_judge_count)
+
+# Loop through and create judgehost instances
+for ((i = current_judge_count + 1; i <= num_judge_containers + current_judge_count; i++))
+do
+  # Replace the placeholder {{ID}} with the actual number
+  sed "s/{{ID}}/judge-$i/g" domserver.template.yml >> domserver.yml
+  cat <<EOF >> domserver.yml
+      - judge-network
+
+EOF
+done
+
+# Add volumes and network information
 cat <<EOF >> domserver.yml
 volumes:
   submissions-data:
@@ -75,12 +103,15 @@ networks:
   mariadb-network:
     name: mariadb-network
     external: true
-  judge-network:
-    name: judge-network
+  web-network:
+    name: web-network
   traefik-public:
     name: traefik-public
+    external: true
+  judge-network:
+    name: judge-network
     external: true
 EOF
 
 # Now you can use docker-compose up to launch all instances
-# docker compose -f judgehost.yml up -d
+docker compose -f domserver.yml up -d
