@@ -51,30 +51,20 @@ cat <<EOF >> domserver.yml
 services:
 EOF
 
-current_web_count = docker ps --filter "name=domserver-web-" --format "{{.Names}}" | grep -c "domserver-web-"
+current_web_count=docker ps --filter "name=domserver-web-" --format "{{.Names}}" | grep -c "domserver-web-"
+
 # Loop through and create judgehost instances
 for ((i = current_web_count + 1; i <= num_web_containers + current_web_count; i++))
 do
   # Replace the placeholder {{ID}} with the actual number
   sed "s/{{ID}}/$i/g" domserver.template.yml >> domserver.yml
-  cat <<EOF >> judgehost.yml
+  cat >> domserver.yml
       - web-network
+
 EOF
 done
 
 cat <<EOF >> domserver.yml
-volumes:
-EOF
-# Loop through and create judgehost instances
-for ((i=1; i<=NUM_JUDGEHOSTS; i++))
-do  
-cat <<EOF >> judgehost.yml  
-  judgehost-data-$i:
-    name: judgehost-data-$i
-EOF
-done
-
-cat <<EOF >> judgehost.yml
 volumes:
   submissions-data:
     name: domserver-submissions-data

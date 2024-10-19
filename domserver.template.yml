@@ -15,9 +15,7 @@
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
-    ports:
-      - "8081:80"
     networks:
-      - domjudge-network
+      - traefik-network
       - mariadb-network
 
