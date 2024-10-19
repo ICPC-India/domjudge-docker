@@ -12,11 +12,14 @@ services:
       --max-connections=1000 
       --max-allowed-packet=512M
       --performance-schema=ON
-      --join-buffer-size=1M
-      --innodb-buffer-pool-size=256M
+      --join-buffer-size=4M
+      --innodb-buffer-pool-size=15G
       --innodb-log-file-size=32M
       --innodb-log-buffer-size=32M
-      --innodb-log-files-in-group=2      
+      --query-cache-size=0
+      --query-cache-type=0
+      --tmp-table-size=512M
+      --max-heap-table-size=512M      
       --slow-query-log=1
       --slow-query-log-file=/var/lib/mysql/mariadb-slow.log
       --long-query-time=1
