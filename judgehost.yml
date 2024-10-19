@@ -1,0 +1,16 @@
+      - web-network
+volumes:
+  submissions-data:
+    name: domserver-submissions-data
+  judgings-data:
+    name: domserver-judgings-data
+
+networks:
+  mariadb-network:
+    name: mariadb-network
+    external: true
+  judge-network:
+    name: judge-network
+  traefik-public:
+    name: traefik-public
+    external: true

@@ -1,7 +1,13 @@
 services:
-  domserver:
+  domserver-1:
     image: domjudge/domserver:8.2.3
-    container_name: domserver
+    restart: always
+    privileged: true
+    hostname: judgehost
+    container_name: domserver-1  # Dynamic container name
+    volumes:
+      - submissions-data:/opt/domjudge/domserver/submissions/
+      - judgings-data:/opt/domjudge/domserver/judgings/
     environment:
       MYSQL_HOST: db
       MYSQL_DATABASE: ${DJ_DB}
@@ -12,42 +18,8 @@ services:
       FPM_MAX_CHILDREN: 40
     ports:
       - "8081:80"
-    volumes:
-      - submissions-data:/opt/domjudge/domserver/submissions/
-      - judgings-data:/opt/domjudge/domserver/judgings/
     networks:
-      - mariadb-network
       - domjudge-network
-      - traefik-public
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.constraint-label=traefik-public
-      - traefik.http.middlewares.prod-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.domserver-http.rule=Host(${SITES})
-      - traefik.http.routers.domserver-http.entrypoints=http
-      - traefik.http.routers.domserver-http.middlewares=prod-redirect
-      - traefik.http.routers.domserver-https.rule=Host(${SITES})
-      - traefik.http.routers.domserver-https.entrypoints=https
-      - traefik.http.routers.domserver-https.tls=true
-      - traefik.http.routers.domserver-https.tls.certresolver=le
-      - traefik.http.services.domserver.loadbalancer.server.port=80
+      - mariadb-network
 
 volumes:
-  submissions-data:
-    name: domserver-submissions-data
-  judgings-data:
-    name: domserver-judgings-data
-
-networks:
-  mariadb-network:
-    name: mariadb-network
-    external: true
-  domjudge-network:
-    name: domjudge-network
-  traefik-public:
-    name: traefik-public
-    external: true
-
-deploy:
-  replicas: 2
