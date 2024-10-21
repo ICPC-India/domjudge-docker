@@ -5,8 +5,7 @@
     hostname: judgehost
     container_name: judgehost-{{ID}}  # Dynamic container name
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup
-      - judgehost-data-{{ID}}:/opt/domjudge/judgehost/judgings/
+      - /sys/fs/cgroup:/sys/fs/cgroup      
     environment:
       DAEMON_ID: "{{ID}}"  # Dynamic DAEMON_ID
       DOMSERVER_BASEURL: http://domserver/

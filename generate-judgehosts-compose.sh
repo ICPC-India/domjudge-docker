@@ -25,18 +25,6 @@ do
 done
 
 cat <<EOF >> judgehost.yml
-volumes:
-EOF
-# Loop through and create judgehost instances
-for ((i=1; i<=NUM_JUDGEHOSTS; i++))
-do  
-cat <<EOF >> judgehost.yml  
-  judgehost-data-$i:
-    name: judgehost-data-$i
-EOF
-done
-
-cat <<EOF >> judgehost.yml
 networks:
   domjudge-network:
     name: domjudge-network
