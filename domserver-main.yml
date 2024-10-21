@@ -1,7 +1,7 @@
 services:
-  domserver-judge-1:
+  domserver:
     image: domjudge/domserver:8.2.3
-    container_name: domserver-judge-1
+    container_name: domserver
     environment:
       MYSQL_HOST: ${DB_HOST}
       MYSQL_DATABASE: ${DJ_DB}
@@ -13,22 +13,22 @@ services:
       - submissions-data:/opt/domjudge/domserver/submissions/
       - judgings-data:/opt/domjudge/domserver/judgings/
     networks:
-      - mariadb-network
-      - judge-network
-      - traefik-public
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.constraint-label=traefik-public
-      - traefik.http.middlewares.prod-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.domserver-http.rule=Host(${SITES})
-      - traefik.http.routers.domserver-http.entrypoints=http
-      - traefik.http.routers.domserver-http.middlewares=prod-redirect
-      - traefik.http.routers.domserver-https.rule=Host(${SITES})
-      - traefik.http.routers.domserver-https.entrypoints=https
-      - traefik.http.routers.domserver-https.tls=true
-      - traefik.http.routers.domserver-https.tls.certresolver=le
-      - traefik.http.services.domserver.loadbalancer.server.port=80
+      # - mariadb-network
+      # - judge-network
+      # - traefik-public
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.docker.network=traefik-public
+    #   - traefik.constraint-label=traefik-public
+    #   - traefik.http.middlewares.prod-redirect.redirectscheme.scheme=https
+    #   - traefik.http.routers.domserver-http.rule=Host(${SITES})
+    #   - traefik.http.routers.domserver-http.entrypoints=http
+    #   - traefik.http.routers.domserver-http.middlewares=prod-redirect
+    #   - traefik.http.routers.domserver-https.rule=Host(${SITES})
+    #   - traefik.http.routers.domserver-https.entrypoints=https
+    #   - traefik.http.routers.domserver-https.tls=true
+    #   - traefik.http.routers.domserver-https.tls.certresolver=le
+    #   - traefik.http.services.domserver.loadbalancer.server.port=80
 
 volumes:
   submissions-data:
@@ -36,12 +36,12 @@ volumes:
   judgings-data:
     name: domserver-judgings-data
 
-networks:
-  mariadb-network:
-    name: mariadb-network
-    external: true
-  judge-network:
-    name: judge-network
-  traefik-public:
-    name: traefik-public
-    external: true
+# networks:
+#   mariadb-network:
+#     name: mariadb-network
+#     external: true
+#   judge-network:
+#     name: judge-network
+#   traefik-public:
+#     name: traefik-public
+#     external: true

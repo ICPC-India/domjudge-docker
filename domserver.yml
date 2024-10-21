@@ -3,7 +3,6 @@ services:
     image: domjudge/domserver:8.2.3
     restart: always
     privileged: true
-    hostname: judgehost
     container_name: domserver-web-1  # Dynamic container name
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
