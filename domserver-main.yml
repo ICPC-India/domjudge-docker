@@ -3,11 +3,10 @@ services:
     image: domjudge/domserver:8.2.3
     container_name: domserver-judge-1
     environment:
-      MYSQL_HOST: db
+      MYSQL_HOST: ${DB_HOST}
       MYSQL_DATABASE: ${DJ_DB}
       MYSQL_USER: ${DJ_DB_USER}
       MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
     volumes:
