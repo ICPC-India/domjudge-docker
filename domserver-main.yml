@@ -7,11 +7,14 @@ services:
       MYSQL_DATABASE: ${DJ_DB}
       MYSQL_USER: ${DJ_DB_USER}
       MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
+      MYSQL_ROOT_USER: ${DB_ROOT_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
       - judgings-data:/opt/domjudge/domserver/judgings/
+      - ./50-domjudge.sh:/scripts/start.d/50-domjudge.sh
     # networks:
       # - mariadb-network
       # - judge-network

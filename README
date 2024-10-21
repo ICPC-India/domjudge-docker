@@ -99,12 +99,14 @@ export DJ_DB_USER=domjudge #enter domjudge db user here
 export DJ_DB_PASSWORD=djpw #enter domjudge db password here 
 export DB_ROOT_PASSWORD=rootpw #enter mariadb root password here 
 docker compose -f mariadb.yml up -d
+export DB_HOST=domjudge.cpas8kasitfl.us-east-1.rds.amazonaws.com
 export DJ_DB=domjudge
 export DJ_DB_USER=domjudge
 export DJ_DB_PASSWORD=djpw
+export MYSQL_ROOT_USER=admin
 export DB_ROOT_PASSWORD=rootpw
 export SITES=\`test1.indiaicpc.in\`
-docker compose -f domserver.yml up -d
+docker compose -f domserver-main.yml up -d
 #check the logs of the domserver and copy the admin password and the judgehost password from it and set it in the below line
 export JUDGEHOST_PASSWORD=SOMEPASSWORD
 ./generate-judgehosts-compose.sh
