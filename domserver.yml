@@ -16,6 +16,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
+    ports:
+      - "8081:80"
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -51,6 +53,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
+    ports:
+      - "8081:80"
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -86,6 +90,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
+    ports:
+      - "8081:80"
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -121,6 +127,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
+    ports:
+      - "8081:80"
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public

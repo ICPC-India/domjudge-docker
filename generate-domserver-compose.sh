@@ -38,6 +38,7 @@ if [[ "$RESULT" == *"1"* ]]; then
 else
   echo -e "Database schema is not populated.\nRunning domserver-judge-1 container on judge-network."
   docker compose -f domserver-main.yml up -d
+  num_judge_containers = num_judge_containers - 1
 fi
 
 #Setting up the domserver-web services 
@@ -63,6 +64,8 @@ for ((i = current_web_count + 1; i <= num_web_containers + current_web_count; i+
 do
   # Replace the placeholder {{ID}} with the actual number
   sed "s/{{ID}}/web-$i/g" domserver.template.yml >> domserver.yml
+
+  # Adding the name of the network to each container
   cat <<EOF >> domserver.yml
       - web-network
 
