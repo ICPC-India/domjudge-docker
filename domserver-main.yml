@@ -12,7 +12,7 @@ services:
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
       - judgings-data:/opt/domjudge/domserver/judgings/
-    networks:
+    # networks:
       # - mariadb-network
       # - judge-network
       # - traefik-public
