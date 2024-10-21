@@ -2,7 +2,7 @@
     image: domjudge/domserver:8.2.3
     restart: always
     privileged: true
-    hostname: judgehost
+    hostname: domserver
     container_name: domserver-{{ID}}  # Dynamic container name
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
@@ -29,5 +29,5 @@
       - traefik.http.routers.domserver-https.tls.certresolver=le
       - traefik.http.services.domserver.loadbalancer.server.port=80
     networks:
-      - traefik-network
+      - traefik-public
       - mariadb-network
