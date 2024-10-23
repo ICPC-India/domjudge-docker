@@ -1,0 +1,14 @@
+services:
+  judgehost:
+    image: domjudge/judgehost:8.2.3
+    restart: always
+    privileged: true
+    hostname: judgehost
+    container_name: judgehost
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup      
+    environment:
+      DAEMON_ID: ${DAEMON_ID}  # Dynamic DAEMON_ID
+      DOMSERVER_BASEURL: http://${DOMSERVER_MAIN_IP}/
+      JUDGEDAEMON_PASSWORD: ${JUDGEHOST_PASSWORD}
+      CONTAINER_TIMEZONE: Asia/Kolkata
