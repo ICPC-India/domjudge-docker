@@ -4,11 +4,10 @@ services:
     restart: always
     privileged: true
     hostname: judgehost
-    container_name: judgehost
+    container_name: judgehost-${IP_ADDRESS}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup      
-    environment:
-      DAEMON_ID: ${DAEMON_ID}  # Dynamic DAEMON_ID
+    environment:      
       DOMSERVER_BASEURL: http://${DOMSERVER_MAIN_IP}/
       JUDGEDAEMON_PASSWORD: ${JUDGEHOST_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
