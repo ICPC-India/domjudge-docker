@@ -53,7 +53,7 @@ git clone https://github.com/ICPC-India/domjudge-docker.git
 cd domjudge-docker
 
 #check the logs of the domserver and copy the admin password and the judgehost password from it and set it in the below line
-export JUDGEHOST_PASSWORD=GIAchaw2fUOkIkTI+AHbMh9NVmXbiMJc
+export JUDGEHOST_PASSWORD=SOMEPASSWORD
 #set the private IP of the main domsever to which the judgehost will connect 
-export DOMSERVER_MAIN_IP=10.0.2.95
-./generate-judgehosts-compose.sh
+export DOMSERVER_MAIN_IP=SOMEIP
+start-judgehost.sh
