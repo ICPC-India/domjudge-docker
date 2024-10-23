@@ -3,8 +3,8 @@ services:
     image: domjudge/judgehost:8.2.3
     restart: always
     privileged: true
-    hostname: judgehost
-    container_name: judgehost-${IP_ADDRESS}
+    hostname: judgehost-${IP_ADDRESS}
+    container_name: judgehost
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup      
     environment:      
