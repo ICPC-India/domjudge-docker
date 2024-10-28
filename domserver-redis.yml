@@ -1,0 +1,29 @@
+services:
+  domserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: domserver
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: domjudge
+      MYSQL_USER: domjudge
+      MYSQL_PASSWORD: djpw
+      MYSQL_ROOT_PASSWORD: rootpw
+      CONTAINER_TIMEZONE: Asia/Kolkata
+      FPM_MAX_CHILDREN: 40
+      REDIS_HOST: redis
+    ports:
+      - "80:80"
+    volumes:
+      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./framework.yaml:/opt/domjudge/domserver/webapp/config/packages/framework.yaml
+      - ./services.yaml:/opt/domjudge/domserver/webapp/config/services.yaml
+    networks:
+      - mariadb-network
+      - judge-network
+    restart: always
+  
+networks:
+  mariadb-network:
+  judge-network:
