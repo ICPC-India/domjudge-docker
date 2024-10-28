@@ -7,8 +7,6 @@ services:
     restart: always
     ports:
       - 6379:6379
-    networks:
-      - db-network
     volumes:
       - redis-data:/data
 
@@ -18,14 +16,9 @@ services:
     restart: always
     ports:
       - 5540:5540  
-    networks:
-      - db-network
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
-
-networks:
-  db-network:
 
 volumes:
   redis-data:

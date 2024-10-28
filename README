@@ -8,7 +8,7 @@ sudo apt --assume-yes update
 sudo apt --assume-yes upgrade
 sudo apt --assume-yes install net-tools
 sudo apt install plocate
-sudo hostnamectl set-hostname domserver-1 #add whatever the number of the instance is
+sudo hostnamectl set-hostname domserver
 sudo apt install mariadb-client-core
 sudo reboot
 
@@ -27,7 +27,11 @@ export DB_ROOT_PASSWORD=QUSa5AUOjsXFYbRN2FVL
 export DJ_DB=domjudge
 export DJ_DB_USER=domjudge
 export DJ_DB_PASSWORD=djpw
-docker compose -f domserver.yml up -d
+# For non-redis
+docker compose -f domserver-aws.yml up -d
+# For redis session management
+docker compose -f domserver-redis.yml up -d
+docker compose -f redis.yml up -d
         
 ##Setting up judgehost
 
@@ -37,7 +41,7 @@ sudo apt --assume-yes update
 sudo apt --assume-yes upgrade
 sudo apt --assume-yes install net-tools
 sudo apt install plocate
-sudo hostnamectl set-hostname judgehost-1 #add whatever the number of the instance is
+sudo hostnamectl set-hostname judgehost
 
 #In /etc/default/grub.d/50-cloudimg-settings.cfg, add 'cgroup_enable=memory swapaccount=1' to #GRUB_CMDLINE_LINUX_DEFAULT. On modern distros (e.g. Debian bullseye and Ubuntu Jammy #Jellyfish) which have cgroup v2 enabled by default, we need to add #'systemd.unified_cgroup_hierarchy=0' as well.
 
@@ -57,3 +61,4 @@ export JUDGEHOST_PASSWORD=SOMEPASSWORD
 #set the private IP of the main domsever to which the judgehost will connect 
 export DOMSERVER_MAIN_IP=SOMEIP
 start-judgehost.sh
+
