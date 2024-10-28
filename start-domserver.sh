@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export DB_HOST=database-icpc.cpas8kasitfl.us-east-1.rds.amazonaws.com
-export DB_ROOT_PASSWORD=QUSa5AUOjsXFYbRN2FVL
+export DB_HOST=icpc-rds.cpas8kasitfl.us-east-1.rds.amazonaws.com
+export DB_ROOT_PASSWORD=mOf2QrnI5tS5y0wRzv81
 export DJ_DB=domjudge
 export DJ_DB_USER=domjudge
 export DJ_DB_PASSWORD=djpw
