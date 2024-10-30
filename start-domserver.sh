@@ -10,11 +10,11 @@ export DJ_DB_PASSWORD=djpw
 docker container rm -f $(docker container ls -q)
 
 # Check for command line argument
-if [ "$1" == "redis" ]; then
+if [ "$2" == "redis" ]; then
     # Start Redis and DOMserver with Redis configuration
-    docker compose -f domserver-redis.yml up -d
+    FPM_MAX_CHILDREN=$1 docker compose -f domserver-redis.yml up -d
     docker compose -f redis.yml up -d
 else
     # Start regular DOMserver setup
-    docker compose -f domserver.yml up -d
+    FPM_MAX_CHILDREN=$1 docker compose -f domserver.yml up -d
 fi

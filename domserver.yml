@@ -11,6 +11,10 @@ services:
       MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
-      FPM_MAX_CHILDREN: 40
     restart: always
+    entrypoint: ["bash", "-c"]
+    command: 
+      - >
+        sed --follow-symlinks -i "s/^pm\.max_children = .*$/pm.max_children = ${FPM_MAX_CHILDREN}/" "/etc/php/8.2/fpm/pool.d/domjudge.conf";
+        /scripts/start.sh;
 
