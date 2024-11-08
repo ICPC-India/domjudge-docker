@@ -18,8 +18,8 @@ services:
         sed --follow-symlinks -i "s/^pm\.max_children = .*$/pm.max_children = ${FPM_MAX_CHILDREN}/" "/etc/php/8.2/fpm/pool.d/domjudge.conf";
         /scripts/start.sh;
     volumes:
-      - scoreboard-pagination/db-config.yaml:/opt/domjudge/domserver/etc/db-config.yaml
-      - scoreboard-pagination/ScoreboardService.php:/opt/domjudge/domserver/webapp/src/Service/ScoreboardService.php
-      - scoreboard-pagination/base.html.twig:/opt/domjudge/domserver/webapp/templates/base.html.twig
-      - scoreboard-pagination/scoreboard.html.twig:/opt/domjudge/domserver/webapp/templates/partials/scoreboard.html.twig
-      - scoreboard-pagination/scoreboard_table_pagingnation.html.twig:/opt/domjudge/domserver/webapp/templates/partials/scoreboard_table_pagingnation.html.twig
+      - ./scoreboard-pagination/db-config.yaml:/opt/domjudge/domserver/etc/db-config.yaml
+      - ./scoreboard-pagination/ScoreboardService.php:/opt/domjudge/domserver/webapp/src/Service/ScoreboardService.php
+      - ./scoreboard-pagination/base.html.twig:/opt/domjudge/domserver/webapp/templates/base.html.twig
+      - ./scoreboard-pagination/scoreboard.html.twig:/opt/domjudge/domserver/webapp/templates/partials/scoreboard.html.twig
+      - ./scoreboard-pagination/scoreboard_table_pagingnation.html.twig:/opt/domjudge/domserver/webapp/templates/partials/scoreboard_table_pagingnation.html.twig
