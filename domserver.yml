@@ -30,7 +30,7 @@ services:
       - traefik.http.routers.domserver-https.tls.certresolver=le
       - traefik.http.services.domserver.loadbalancer.server.port=80
     networks:
-      - traefik-network
+      - traefik-public
       - mariadb-network
       - web-network
 
@@ -65,7 +65,7 @@ services:
       - traefik.http.routers.domserver-https.tls.certresolver=le
       - traefik.http.services.domserver.loadbalancer.server.port=80
     networks:
-      - traefik-network
+      - traefik-public
       - mariadb-network
       - web-network
 
@@ -100,7 +100,7 @@ services:
       - traefik.http.routers.domserver-https.tls.certresolver=le
       - traefik.http.services.domserver.loadbalancer.server.port=80
     networks:
-      - traefik-network
+      - traefik-public
       - mariadb-network
       - judge-network
 

@@ -27,7 +27,7 @@ done
 cat <<EOF >> judgehost.yml
 networks:
   domjudge-network:
-    name: domjudge-network
+    name: judge-network
     external: true
 EOF
 
