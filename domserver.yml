@@ -121,4 +121,3 @@ networks:
     external: true
   judge-network:
     name: judge-network
-    external: true
