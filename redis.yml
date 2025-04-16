@@ -1,0 +1,30 @@
+services:
+  redis:
+    image: redis:7.4
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+    networks:
+      - mariadb-network  # 🔥 Add this line
+
+  redisinsight:
+    image: redislabs/redisinsight:2.58
+    container_name: redisinsight
+    restart: always
+    ports:
+      - 5540:5540  
+    networks:
+      - mariadb-network
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+networks:
+  mariadb-network:
+    external: true  
+
+volumes:
+  redis-data:
