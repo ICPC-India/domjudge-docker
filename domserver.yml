@@ -65,9 +65,12 @@ services:
       - traefik.http.routers.domserver-https.tls.certresolver=le
       - traefik.http.services.domserver.loadbalancer.server.port=80
     networks:
-      - traefik-public
-      - mariadb-network
-      - judge-network
+      traefik-public:
+      mariadb-network:
+      web-network:
+      judge-network:
+        aliases:
+          - domserver  
 
 volumes:
   submissions-data:
