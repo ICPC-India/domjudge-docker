@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:11.2
+    container_name: mariadb
+    environment:
+      MYSQL_DATABASE: ${DJ_DB}
+      MYSQL_USER: ${DJ_DB_USER}
+      MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      CONTAINER_TIMEZONE: Asia/Kolkata
+    command: >
+      --max-connections=1000
+      --max-allowed-packet=512M
+      --performance-schema=ON
+      --join-buffer-size=4M
+      --innodb-buffer-pool-size=15G
+      --innodb-log-file-size=32M
+      --innodb-log-buffer-size=32M
+      --query-cache-size=0
+      --query-cache-type=0
+      --tmp-table-size=512M
+      --max-heap-table-size=512M
+      --slow-query-log=1
+      --slow-query-log-file=/var/lib/mysql/mariadb-slow.log
+      --long-query-time=1
+    volumes:
+      - db-data:/var/lib/mysql
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    restart: always
+    networks:
+      - domjudge-net
+
+  domserver:
+    image: domjudge/domserver:8.2.3
+    container_name: domserver
+    restart: always
+    privileged: true
+    hostname: domserver
+    ports:
+      - "80:80"
+    volumes:
+      - submissions-data:/opt/domjudge/domserver/submissions/
+      - judgings-data:/opt/domjudge/domserver/judgings/
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: ${DJ_DB}
+      MYSQL_USER: ${DJ_DB_USER}
+      MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      CONTAINER_TIMEZONE: Asia/Kolkata
+      FPM_MAX_CHILDREN: 40
+      DOMSERVER_BASEURL: http://test1.indiaicpc.in
+    networks:
+      - domjudge-net
+
+  judgehost-1:
+    image: domjudge/judgehost:8.2.3
+    container_name: judgehost-1
+    restart: always
+    privileged: true
+    hostname: judgehost-1
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    environment:
+      DAEMON_ID: "1"
+      DOMSERVER_BASEURL: http://domserver
+      JUDGEDAEMON_PASSWORD: ${JUDGEHOST_PASSWORD}
+      CONTAINER_TIMEZONE: Asia/Kolkata
+    networks:
+      - domjudge-net
+
+volumes:
+  db-data:
+  submissions-data:
+  judgings-data:
+
+networks:
+  domjudge-net:
+    driver: bridge
