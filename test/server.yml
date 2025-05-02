@@ -18,7 +18,6 @@ services:
       FPM_MAX_CHILDREN: 40
   
     networks:
-      - traefik-public
       - mariadb-network
       - web-network
 
@@ -39,8 +38,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       FPM_MAX_CHILDREN: 40
+
     networks:
-      traefik-public:
       mariadb-network:
       web-network:
       judge-network:
@@ -59,8 +58,6 @@ networks:
     external: true
   web-network:
     name: web-network
-  traefik-public:
-    name: traefik-public
     external: true
   judge-network:
     name: judge-network
