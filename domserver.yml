@@ -41,12 +41,13 @@ services:
       - mariadb-network
       - web-network
 
-  domserver-judge-2:
-    image: domjudge/judgehost:8.2.3
+  domserver-judge-1:
+    build:
+      context: .
+      dockerfile: ./redis/Dockerfile
     restart: always
     privileged: true
     hostname: judgehost
-    container_name: domserver-judge-2
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
       - judgings-data:/opt/domjudge/domserver/judgings/
