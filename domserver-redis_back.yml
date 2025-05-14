@@ -7,13 +7,14 @@ services:
     ports:
       - "80:80"
     environment:
-      MYSQL_HOST: ${DB_HOST}
+      MYSQL_HOST: db
       MYSQL_DATABASE: ${DJ_DB}
       MYSQL_USER: ${DJ_DB_USER}
       MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
       REDIS_HOST: redis
+      FPM_MAX_CHILDREN:  40
     restart: always
     volumes:
       - ./redis/php.ini:/usr/local/etc/php/php.ini
@@ -24,6 +25,11 @@ services:
       - >
         sed --follow-symlinks -i "s/^pm\.max_children = .*$/pm.max_children = ${FPM_MAX_CHILDREN}/" "/etc/php/8.2/fpm/pool.d/domjudge.conf";
         /scripts/start.sh;
+    
+    networks:
+      - domserver-network
+      - mariadb-network
+
     volumes:
       - scoreboard-pagination/db-config.yaml:/opt/domjudge/domserver/etc/db-config.yaml
       - scoreboard-pagination/ScoreboardService.php:/opt/domjudge/domserver/webapp/src/Service/ScoreboardService.php
@@ -31,3 +37,9 @@ services:
       - scoreboard-pagination/scoreboard.html.twig:/opt/domjudge/domserver/webapp/templates/partials/scoreboard.html.twig
       - scoreboard-pagination/scoreboard_table_pagingnation.html.twig:/opt/domjudge/domserver/webapp/templates/partials/scoreboard_table_pagingnation.html.twig
 
+networks:
+  domserver-network:
+    name: domserver-network
+  mariadb-network:
+    name: mariadb-network
+    external: true

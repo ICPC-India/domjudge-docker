@@ -18,3 +18,9 @@ else
     # Start regular DOMserver setup
     FPM_MAX_CHILDREN=$1 docker compose -f domserver.yml up -d
 fi
+
+
+export DJ_DB=domjudge
+export DJ_DB_USER=domjudge
+export DJ_DB_PASSWORD=djpw
+export DB_ROOT_PASSWORD=rootpw

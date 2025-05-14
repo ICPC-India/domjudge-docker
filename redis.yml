@@ -20,5 +20,11 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
 
+  network:
+    name: domserver-network
 volumes:
   redis-data:
+
+networks:
+  domserver-network:
+    name: domserver-network

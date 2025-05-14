@@ -22,11 +22,11 @@ cd domjudge-docker
 
 #Log into the RDS using mysql client and run the commands in init.sql. 
 
-export DB_HOST=database-icpc.cpas8kasitfl.us-east-1.rds.amazonaws.com
-export DB_ROOT_PASSWORD=QUSa5AUOjsXFYbRN2FVL
+export DB_HOST=mariadb
 export DJ_DB=domjudge
 export DJ_DB_USER=domjudge
 export DJ_DB_PASSWORD=djpw
+export DB_ROOT_PASSWORD=rootpw
 # For non-redis
 docker compose -f domserver-aws.yml up -d
 # For redis session management

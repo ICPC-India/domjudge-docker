@@ -11,3 +11,14 @@ services:
       DOMSERVER_BASEURL: http://${DOMSERVER_MAIN_IP}/
       JUDGEDAEMON_PASSWORD: ${JUDGEHOST_PASSWORD}
       CONTAINER_TIMEZONE: Asia/Kolkata
+    networks:
+      - mariadb-network
+      - web-network
+networks:
+
+  mariadb-network:
+    name: mariadb-network
+    external: true
+  web-network:
+    name: web-network
+    external: true
