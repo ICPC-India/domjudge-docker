@@ -9,6 +9,8 @@ services:
       - 6379:6379
     volumes:
       - redis-data:/data
+    networks:
+      - web-network
 
   redisinsight:
     image: redislabs/redisinsight:2.58
@@ -19,12 +21,13 @@ services:
     environment:
       REDIS_HOST: redis
       REDIS_PORT: 6379
+    networks:
+      - web-network
 
-  network:
-    name: domserver-network
 volumes:
   redis-data:
 
 networks:
-  domserver-network:
-    name: domserver-network
+  web-network:
+    name: web-network
+    external: true
