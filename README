@@ -1,64 +1,94 @@
-#Setup AWS using the instructions in the file SETUP-AWS
+# DOMjudge Docker Setup
 
-#Setting up domservers (log in to both the servers from the jump-host and then run teh following commands)
+Complete Docker setup for DOMjudge with Redis, Traefik, and custom templates.
 
-sudo timedatectl set-timezone 'Asia/Kolkata'
-sudo apt --assume-yes remove unattended-upgrades
-sudo apt --assume-yes update 
-sudo apt --assume-yes upgrade
-sudo apt --assume-yes install net-tools
-sudo apt install plocate
-sudo hostnamectl set-hostname domserver
-sudo apt install mariadb-client-core
-sudo reboot
+## Components
+- **DOMjudge**: Contest platform with custom templates
+- **MariaDB**: Database
+- **Redis**: Cache & sessions  
+- **Traefik**: Reverse proxy with SSL
+- **Portainer**: Container management
 
-#connect again 
+## Quick Deploy
 
-sudo curl -fsSL https://get.docker.com | bash
-sudo usermod -aG docker ubuntu
-su - ubuntu #or relogin with ubuntu user
-git clone https://github.com/ICPC-India/domjudge-docker.git
-cd domjudge-docker
+### 1. Traefik & SSL
+```bash
+export EMAIL=your-email@example.com
+export TRAEFIK_DOMAIN=traefik.yourdomain.com
+export HASHED_PASSWORD=$(openssl passwd -apr1)
+echo $HASHED_PASSWORD > traefik_pass.txt
+docker compose -f traefik.yml up -d
+```
 
-#Log into the RDS using mysql client and run the commands in init.sql. 
-
-export DB_HOST=mariadb
-export DJ_DB=domjudge
-export DJ_DB_USER=domjudge
-export DJ_DB_PASSWORD=djpw
-export DB_ROOT_PASSWORD=rootpw
-# For non-redis
-docker compose -f domserver-aws.yml up -d
-# For redis session management
-docker compose -f domserver-redis.yml up -d
+### 2. Database & Redis
+```bash
+export DJ_DB=domjudge DJ_DB_USER=domjudge
+export DJ_DB_PASSWORD=secure_password
+export DB_ROOT_PASSWORD=root_password
+docker compose -f mariadb.yml up -d
 docker compose -f redis.yml up -d
-        
-##Setting up judgehost
+```
 
-sudo timedatectl set-timezone 'Asia/Kolkata'
-sudo apt --assume-yes remove unattended-upgrades
-sudo apt --assume-yes update 
-sudo apt --assume-yes upgrade
-sudo apt --assume-yes install net-tools
-sudo apt install plocate
-sudo hostnamectl set-hostname judgehost
+### 3. Portainer (Optional)
+```bash
+export PORTAINER_DOMAIN=portainer.yourdomain.com
+docker compose -f portainer.yml up -d
+```
 
-#In /etc/default/grub.d/50-cloudimg-settings.cfg, add 'cgroup_enable=memory swapaccount=1' to #GRUB_CMDLINE_LINUX_DEFAULT. On modern distros (e.g. Debian bullseye and Ubuntu Jammy #Jellyfish) which have cgroup v2 enabled by default, we need to add #'systemd.unified_cgroup_hierarchy=0' as well.
+### 4. DOMjudge Server
+```bash
+export SITES=contest.yourdomain.com
+docker compose -f domserver.yml up -d
 
-sudo vim /etc/default/grub.d/50-cloudimg-settings.cfg
-GRUB_CMDLINE_LINUX_DEFAULT="cgroup_enable=memory swapaccount=1 systemd.unified_cgroup_hierarchy=0"
-sudo update-grub
-sudo reboot
+# Get passwords from logs
+docker compose -f domserver.yml logs domserver | grep -E "(admin|judgehost)"
+```
 
-sudo curl -fsSL https://get.docker.com | bash
-sudo usermod -aG docker ubuntu
-su - ubuntu #or relogin with ubuntu user
-git clone https://github.com/ICPC-India/domjudge-docker.git
-cd domjudge-docker
+### 5. Judgehosts
+```bash
+export DOMSERVER_MAIN_IP=your_server_ip
+export JUDGEHOST_PASSWORD=password_from_logs
+docker compose -f judgehost.yml up -d
+```
 
-#check the logs of the domserver and copy the admin password and the judgehost password from it and set it in the below line
-export JUDGEHOST_PASSWORD=SOMEPASSWORD
-#set the private IP of the main domsever to which the judgehost will connect 
-export DOMSERVER_MAIN_IP=SOMEIP
-start-judgehost.sh
+## Access URLs
+- **Contest**: https://contest.yourdomain.com
+- **Traefik**: https://traefik.yourdomain.com  
+- **Portainer**: https://portainer.yourdomain.com
+- **Redis Insight**: http://server_ip:5540
+
+## Custom Templates
+Edit templates in `template-overrides/`:
+- `base.html.twig` - Team interface base
+- `submit_scripts.html.twig` - Submission scripts
+
+Restart domserver after changes: `docker compose -f domserver.yml restart`
+
+## Useful Commands
+
+```bash
+# View logs
+docker compose -f domserver.yml logs -f
+
+# Restart services  
+docker compose -f domserver.yml restart
+
+# Database backup
+docker exec mariadb mysqldump -u root -p$DB_ROOT_PASSWORD $DJ_DB > backup.sql
+
+# Stop all
+docker compose -f traefik.yml down
+docker compose -f domserver.yml down  
+docker compose -f judgehost.yml down
+docker compose -f redis.yml down
+docker compose -f mariadb.yml down
+```
+
+## Troubleshooting
+
+**SSL Issues**: Check DNS, ports 80/443 open, view Traefik logs
+**Judgehost Issues**: Verify DOMSERVER_MAIN_IP and password  
+**Database Issues**: Check credentials match across services
+
+**Debug**: `docker compose -f [service].yml logs --tail=50`
 

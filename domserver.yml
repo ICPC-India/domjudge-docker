@@ -7,7 +7,7 @@ services:
       dockerfile: ./redis/Dockerfile
     restart: always
     privileged: true
-    hostname: judgehost
+    hostname: domserver
     container_name: domserver
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
@@ -15,6 +15,8 @@ services:
       - ./redis/php.ini:/usr/local/etc/php/php.ini
       - ./redis/framework.yaml:/opt/domjudge/domserver/webapp/config/packages/framework.yaml
       - ./redis/services.yaml:/opt/domjudge/domserver/webapp/config/services.yaml
+      - ./template-overrides/base.html.twig:/opt/domjudge/domserver/webapp/templates/team/base.html.twig
+      - ./template-overrides/submit_scripts.html.twig:/opt/domjudge/domserver/webapp/templates/team/partials/submit_scripts.html.twig
     environment:
       MYSQL_HOST: db
       MYSQL_DATABASE: ${DJ_DB}
@@ -47,7 +49,7 @@ services:
       dockerfile: ./redis/Dockerfile
     restart: always
     privileged: true
-    hostname: judgehost
+    hostname: domserver-judge
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
       - judgings-data:/opt/domjudge/domserver/judgings/
