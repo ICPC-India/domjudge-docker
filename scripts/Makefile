@@ -4,11 +4,11 @@
 ENV ?= dev
 
 # Compose file location (adjust if needed)
-COMPOSE_FILE := config/docker-compose.$(ENV).ymldeplo location
+COMPOSE_FILE := config/docker-compose.$(ENV).yml
 ENV_FILE := .env.$(ENV)
 
 # Docker Compose command (use 'docker compose' if using newer Docker)
-DC := docker-compose
+DC := docker compose
 
 # Helper to check if env file exists
 ifeq (,$(wildcard $(ENV_FILE)))
