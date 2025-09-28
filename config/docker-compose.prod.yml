@@ -215,12 +215,9 @@ volumes:
 networks:
   traefik-public:
     name: traefik-public
-    external: true
   mariadb-network:
     name: mariadb-network
-    external: true
   web-network:
     name: web-network
-    external: true
   judge-network:
     name: judge-network
