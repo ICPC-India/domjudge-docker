@@ -36,7 +36,7 @@ up:
 	@echo "\nIf you need the judgehost password, run: make extract-password ENV=$(ENV)"
 extract-password:
 	@echo "Extracting JUDGEHOST_PASSWORD from domserver logs for $(ENV) environment..."
-	bash $(dir $(lastword $(MAKEFILE_LIST)))extract_judgehost_password.sh $(ENV)
+	bash scripts/extract_judgehost_password.sh $(ENV)
 
 down:
 	@echo "Stopping services for $(ENV) environment..."
