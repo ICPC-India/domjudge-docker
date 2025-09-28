@@ -99,8 +99,8 @@ services:
 
   domserver:
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
     restart: always
     privileged: true
     hostname: domserver
@@ -108,11 +108,11 @@ services:
     volumes:
       - submissions-data:/opt/domjudge/domserver/submissions/
       - judgings-data:/opt/domjudge/domserver/judgings/
-      - ./redis/php.ini:/usr/local/etc/php/php.ini
-      - ./redis/framework.yaml:/opt/domjudge/domserver/webapp/config/packages/framework.yaml
-      - ./redis/services.yaml:/opt/domjudge/domserver/webapp/config/services.yaml
-      - ./services/template-overrides/base.html.twig:/opt/domjudge/domserver/webapp/templates/team/base.html.twig
-      - ./services/template-overrides/submit_scripts.html.twig:/opt/domjudge/domserver/webapp/templates/team/partials/submit_scripts.html.twig
+      - ../redis/php.ini:/usr/local/etc/php/php.ini
+      - ../redis/framework.yaml:/opt/domjudge/domserver/webapp/config/packages/framework.yaml
+      - ../redis/services.yaml:/opt/domjudge/domserver/webapp/config/services.yaml
+      - ../services/template-overrides/base.html.twig:/opt/domjudge/domserver/webapp/templates/team/base.html.twig
+      - ../services/template-overrides/submit_scripts.html.twig:/opt/domjudge/domserver/webapp/templates/team/partials/submit_scripts.html.twig
     environment:
       MYSQL_HOST: ${DJ_DB_HOST}
       MYSQL_DATABASE: ${DJ_DB}
@@ -141,8 +141,8 @@ services:
 
   domserver-judge-1:
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
     restart: always
     privileged: true
     hostname: domserver-judge
