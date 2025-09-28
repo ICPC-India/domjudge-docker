@@ -66,6 +66,7 @@ services:
       --long-query-time=${MARIADB_LONG_QUERY_TIME}
     volumes:
       - db-data:/var/lib/mysql
+      - ../init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ulimits:
       nofile:
         soft: ${MARIADB_ULIMIT_NOFILE_SOFT}
@@ -138,6 +139,8 @@ services:
       - traefik-public
       - mariadb-network
       - web-network
+    depends_on:
+      - db
 
   domserver-judge-1:
     build:
