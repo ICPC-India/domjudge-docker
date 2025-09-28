@@ -6,17 +6,17 @@
 
 services:
   # Include your services here, e.g.:
-  # traefik:
+  traefik:
   #   ...
-  # mariadb:
+  mariadb:
   #   ...
-  # redis:
+  redis:
   #   ...
-  # domserver:
+  domserver:
   #   ...
-  # judgehost:
+  judgehost:
   #   ...
-  # portainer:
+  portainer:
   #   ...
 
 # You can use 'docker-compose -f config/docker-compose.prod.yml' or 'make up ENV=prod'
