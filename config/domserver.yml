@@ -1,10 +1,8 @@
-version: "3.8"
-
 services:
   domserver:
     build:
       context: .
-      dockerfile: ./redis/Dockerfile
+      dockerfile: ./docker/Dockerfile
     restart: always
     privileged: true
     hostname: domserver
@@ -15,16 +13,16 @@ services:
       - ./redis/php.ini:/usr/local/etc/php/php.ini
       - ./redis/framework.yaml:/opt/domjudge/domserver/webapp/config/packages/framework.yaml
       - ./redis/services.yaml:/opt/domjudge/domserver/webapp/config/services.yaml
-      - ./template-overrides/base.html.twig:/opt/domjudge/domserver/webapp/templates/team/base.html.twig
-      - ./template-overrides/submit_scripts.html.twig:/opt/domjudge/domserver/webapp/templates/team/partials/submit_scripts.html.twig
+      - ./services/template-overrides/base.html.twig:/opt/domjudge/domserver/webapp/templates/team/base.html.twig
+      - ./services/template-overrides/submit_scripts.html.twig:/opt/domjudge/domserver/webapp/templates/team/partials/submit_scripts.html.twig
     environment:
-      MYSQL_HOST: db
+      MYSQL_HOST: ${DJ_DB_HOST}
       MYSQL_DATABASE: ${DJ_DB}
       MYSQL_USER: ${DJ_DB_USER}
       MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      CONTAINER_TIMEZONE: Asia/Kolkata
-      FPM_MAX_CHILDREN: 40
+      CONTAINER_TIMEZONE: ${CONTAINER_TIMEZONE}
+      FPM_MAX_CHILDREN: ${FPM_MAX_CHILDREN}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -46,7 +44,7 @@ services:
   domserver-judge-1:
     build:
       context: .
-      dockerfile: ./redis/Dockerfile
+      dockerfile: ./docker/Dockerfile
     restart: always
     privileged: true
     hostname: domserver-judge
@@ -54,12 +52,12 @@ services:
       - submissions-data:/opt/domjudge/domserver/submissions/
       - judgings-data:/opt/domjudge/domserver/judgings/
     environment:
-      MYSQL_HOST: db
+  MYSQL_HOST: ${DJ_DB_HOST}
       MYSQL_DATABASE: ${DJ_DB}
       MYSQL_USER: ${DJ_DB_USER}
       MYSQL_PASSWORD: ${DJ_DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      CONTAINER_TIMEZONE: Asia/Kolkata
+  CONTAINER_TIMEZONE: ${CONTAINER_TIMEZONE}
     labels:
       - traefik.enable=false
     networks:

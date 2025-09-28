@@ -1,0 +1,23 @@
+# Production Docker Compose file for DOMjudge
+# Copy of dev setup, adjust as needed for production
+
+# Example: include all your service YAMLs as in dev
+# You may want to add resource limits, use different images, or change volumes for production
+
+services:
+  # Include your services here, e.g.:
+  # traefik:
+  #   ...
+  # mariadb:
+  #   ...
+  # redis:
+  #   ...
+  # domserver:
+  #   ...
+  # judgehost:
+  #   ...
+  # portainer:
+  #   ...
+
+# You can use 'docker-compose -f config/docker-compose.prod.yml' or 'make up ENV=prod'
+# to start production services.

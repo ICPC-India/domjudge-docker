@@ -1,0 +1,21 @@
+# Development Docker Compose file for DOMjudge
+# Example: include all your service YAMLs for development
+
+# You can use this file to override or extend production settings for local development.
+# For example, you might mount local volumes, use different images, or expose extra ports.
+
+services:
+  # traefik:
+  #   ...
+  # mariadb:
+  #   ...
+  # redis:
+  #   ...
+  # domserver:
+  #   ...
+  # judgehost:
+  #   ...
+  # portainer:
+  #   ...
+
+# Use 'docker-compose -f config/docker-compose.dev.yml' or 'make up' to start dev services.
