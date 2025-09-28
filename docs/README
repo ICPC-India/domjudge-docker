@@ -1,20 +1,3 @@
-echo $HASHED_PASSWORD > traefik_pass.txt
-docker compose -f traefik.yml up -d
-docker compose -f mariadb.yml up -d
-docker compose -f redis.yml up -d
-docker compose -f portainer.yml up -d
-docker compose -f domserver.yml up -d
-docker compose -f domserver.yml logs domserver | grep -E "(admin|judgehost)"
-docker compose -f judgehost.yml up -d
-docker compose -f domserver.yml logs -f
-docker compose -f domserver.yml restart
-docker exec mariadb mysqldump -u root -p$DB_ROOT_PASSWORD $DJ_DB > backup.sql
-docker compose -f traefik.yml down
-docker compose -f domserver.yml down  
-docker compose -f judgehost.yml down
-docker compose -f redis.yml down
-docker compose -f mariadb.yml down
-
 # DOMjudge Docker Quick Start
 
 This project provides a complete Docker-based setup for DOMjudge, including MariaDB, Redis, Traefik, and Portainer.
@@ -25,6 +8,7 @@ This project provides a complete Docker-based setup for DOMjudge, including Mari
 	- Edit `.env.dev` (for development) or `.env.prod` (for production) with your settings.
 
 2. **Start All Services**
+    - Generate Hashpassword for the taefik: `make hash-password`
 	- Development: `make up`
 	- Production: `make up ENV=prod`
 
