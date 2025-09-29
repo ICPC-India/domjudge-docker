@@ -56,7 +56,7 @@ extract-password:
 
 # ---- Lifecycle ----
 
-up:
+up: check-docker
 	@echo "🚀 Starting services for $(ENV) environment..."
 	$(DC) --env-file $(ENV_FILE) $(COMPOSE_FILE) up -d
 	@echo "\nℹ️ If you need the judgehost password, run: make extract-password ENV=$(ENV)"
