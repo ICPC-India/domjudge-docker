@@ -2,26 +2,40 @@
 # Helper script to extract JUDGEHOST_PASSWORD from domserver logs and update .env file
 # Usage: ./extract_judgehost_password.sh [dev|prod] (default: dev)
 
+#!/bin/bash
+# Helper script to extract JUDGEHOST_PASSWORD from domserver logs and update .env file
+# Usage: ./extract_judgehost_password.sh [dev|prod] (default: dev)
+
+set -euo pipefail
+
 ENV=${1:-dev}
 ENV_FILE=".env.$ENV"
-COMPOSE_FILE="config/docker-compose.$ENV.yml"
 
-if [ ! -f "$COMPOSE_FILE" ]; then
-  echo "Compose file $COMPOSE_FILE not found!"
-  exit 1
+# Compose args mirror Makefile behavior
+if [ "$ENV" = "prod" ]; then
+  COMPOSE_ARGS="-f docker-compose.dev.yml -f docker-compose.yml"
+else
+  COMPOSE_ARGS="-f docker-compose.dev.yml"
 fi
 
 if [ ! -f "$ENV_FILE" ]; then
-  echo ".env file $ENV_FILE not found!"
+  echo ".env file $ENV_FILE not found!" >&2
   exit 1
 fi
 
-# Extract password from domserver logs
-echo "Extracting JUDGEHOST_PASSWORD from domserver logs..."
-PASSWORD=$(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" logs domserver | grep -Eo 'judgehost password: [^ ]+' | awk '{print $3}' | tail -1)
+echo "Extracting JUDGEHOST_PASSWORD from domserver logs (env=$ENV)..."
+
+# Try to extract lines like:
+#   Initial judgehost password is PPiQn+Hh...
+#   ...judgehost password: <password>
+# Use case-insensitive search and capture the last token on the matching line
+PASSWORD=$(docker compose --env-file "$ENV_FILE" $COMPOSE_ARGS logs domserver 2>/dev/null \
+  | grep -Eio 'judgehost password (is|:)[[:space:]]*\S+' \
+  | awk '{print $NF}' \
+  | tail -n1 || true)
 
 if [ -z "$PASSWORD" ]; then
-  echo "Could not find judgehost password in domserver logs."
+  echo "Could not find judgehost password in domserver logs." >&2
   exit 1
 fi
 
