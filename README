@@ -3,6 +3,8 @@
 This project provides a complete Docker-based setup for DOMjudge, including MariaDB, Redis, Traefik, and Portainer.
 
 ## Deployment Flow
+sudo ./scripts/fix_cgroup.sh
+sudo ./scripts/fix_cgroup.sh --reboot
 
 1. **Configure Environment**
 	- Edit `.env.dev` (for development) or `.env.prod` (for production) with your settings.
