@@ -3,14 +3,20 @@
 This project provides a complete Docker-based setup for DOMjudge, including MariaDB, Redis, Traefik, and Portainer.
 
 ## Deployment Flow
-sudo ./scripts/fix_cgroup.sh
-sudo ./scripts/fix_cgroup.sh --reboot
+Before starting Docker services on some Linux hosts you may need to enable memory accounting for cgroups. A helper script is provided:
+
+```bash
+sudo ./scripts/fix_cgroup.sh        # updates /etc/default/grub (backup created) and runs update-grub
+sudo ./scripts/fix_cgroup.sh --reboot  # apply and reboot immediately
+```
 
 1. **Configure Environment**
 	- Edit `.env.dev` (for development) or `.env.prod` (for production) with your settings.
 
 2. **Start All Services**
-    - Generate Hashpassword for the taefik: `make hash-password`
+	- Generate the hashed Traefik password (reads TRAEFIK_PLAINTEXT_PASSWORD in your .env):
+	  - `./scripts/hash_traefik_password.sh dev` or `./scripts/hash_traefik_password.sh prod`
+	  - Or use Make: `make hash-password ENV=prod` (calls the same script)
 	- Development: `make up`
 	- Production: `make up ENV=prod`
 
@@ -24,7 +30,6 @@ sudo ./scripts/fix_cgroup.sh --reboot
 5. **Access Services**
 	- Contest: https://contest.yourdomain.com
 	- Traefik: https://traefik.yourdomain.com
-	- Portainer: https://portainer.yourdomain.com
 	- Redis Insight: http://server_ip:5540
 
 ## Customization
@@ -45,6 +50,12 @@ sudo ./scripts/fix_cgroup.sh --reboot
 - **SSL Issues**: Check DNS, ports 80/443, and Traefik logs
 - **Judgehost Issues**: Ensure `DOMSERVER_MAIN_IP` and password are correct
 - **Database Issues**: Check credentials in `.env` files
+
+## Helper scripts
+
+- `scripts/fix_cgroup.sh` — Adds kernel boot flags required by Docker on some hosts (creates a backup of `/etc/default/grub`). Requires sudo. See above for usage.
+- `scripts/hash_traefik_password.sh` — Reads `TRAEFIK_PLAINTEXT_PASSWORD` from `.env.dev` or `.env.prod`, generates an APR1 hash with `openssl`, and writes `TRAEFIK_HASHED_PASSWORD='...'` into the file.
+
 
 For more, see the Makefile and scripts in the `scripts/` directory.
 
