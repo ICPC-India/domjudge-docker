@@ -57,6 +57,10 @@ ps:
 env:
 	@echo "Using environment: $(ENV)"
 	@cat $(ENV_FILE)
+	
+scale:
+	@echo "Scaling services for $(ENV) environment..."
+	$(DC) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) scale
 
 help:
 	@echo "Available targets:"
