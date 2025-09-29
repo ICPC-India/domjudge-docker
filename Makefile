@@ -21,6 +21,12 @@ ifeq (,$(wildcard $(ENV_FILE)))
 endif
 
 .PHONY: up down restart logs ps env help extract-password hash-password
+
+check-docker:
+	@echo "Running scripts/checkAndInstallDocker.sh to ensure Docker is installed, running, and your user is in the right groups..."
+	@bash scripts/checkAndInstallDocker.sh || { echo >&2 "scripts/checkAndInstallDocker.sh failed."; exit 1; }
+
+
 hash-password:
 	@echo "Generating TRAEFIK_HASHED_PASSWORD from traefik_PLAINTEXT_PASSWORD in $(ENV_FILE)..."
 	PLAINTEXT=$$(grep '^TRAEFIK_PLAINTEXT_PASSWORD=' $(ENV_FILE) | cut -d'=' -f2-); \
