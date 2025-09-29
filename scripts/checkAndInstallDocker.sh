@@ -128,6 +128,20 @@ main() {
 
     # Ensure the current user is in the docker and sudo groups
     ensure_group_membership
+
+    ensure_init_sql_perms() {
+        # Ensure init.sql (one level up from scripts/) is readable by the DB service
+        SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+        INIT_SQL="$SCRIPT_DIR/../init.sql"
+        if [ -f "$INIT_SQL" ]; then
+            echo "Setting permissions on $INIT_SQL to 644 (requires sudo)..."
+            sudo chmod 644 "$INIT_SQL" && echo "Set $INIT_SQL -> 644" || echo "Failed to set permissions on $INIT_SQL" >&2
+        else
+            echo "Init SQL file $INIT_SQL not found; skipping permission change."
+        fi
+    }
+
+    ensure_init_sql_perms || true
 }
 
 main "$@"
