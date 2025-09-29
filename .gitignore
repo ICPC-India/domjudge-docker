@@ -4,3 +4,6 @@ domserver_back.yml
 domserver-redis_back.yml
 test.yml
 .env*
+
+# Explicitly ignore production env
+.env.prod

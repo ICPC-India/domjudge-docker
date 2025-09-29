@@ -1,18 +1,23 @@
-# Makefile for DOMjudge Docker Deployment
 
 # Default environment (can be overridden: make up ENV=prod)
 ENV ?= dev
 
-# Compose file location (adjust if needed)
-COMPOSE_FILE := config/docker-compose.$(ENV).yml
+# Environment file (per-ENV)
 ENV_FILE := .env.$(ENV)
+
+# ENV=prod include the production override docker-compose.yml as an extra -f.
+ifeq ($(ENV),prod)
+	COMPOSE_FILE := -f docker-compose.dev.yml -f docker-compose.yml
+else
+	COMPOSE_FILE := -f docker-compose.dev.yml
+endif
 
 # Docker Compose command (use 'docker compose' if using newer Docker)
 DC := docker compose
 
 # Helper to check if env file exists
 ifeq (,$(wildcard $(ENV_FILE)))
-  $(error Environment file '$(ENV_FILE)' not found!)
+	$(error Environment file '$(ENV_FILE)' not found!)
 endif
 
 .PHONY: up down restart logs ps env help extract-password hash-password
@@ -59,8 +64,12 @@ env:
 	@cat $(ENV_FILE)
 	
 scale:
-	@echo "Scaling services for $(ENV) environment..."
-	$(DC) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) scale
+	@if [ -z "$(N)" ]; then \
+		echo "Usage: make scale ENV=prod N=5"; \
+		exit 1; \
+	fi
+	@echo "Scaling judgehost service to $(N) replicas for $(ENV) environment..."
+	$(DC) --env-file $(ENV_FILE) $(COMPOSE_FILE) up -d --scale judgehost=$(N)
 
 help:
 	@echo "Available targets:"
