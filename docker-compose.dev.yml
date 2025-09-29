@@ -79,8 +79,8 @@ services:
 
   domserver-judge-1:
     build:
-      context: ../
-      dockerfile: docker/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: domserver-judge-1
     restart: always
     privileged: true
