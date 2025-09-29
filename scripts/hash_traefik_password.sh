@@ -29,9 +29,9 @@ echo "Generating hashed password with openssl..."
 HASHED=$(openssl passwd -apr1 "$PLAINTEXT")
 
 if grep -q '^TRAEFIK_HASHED_PASSWORD=' "$ENV_FILE"; then
-  sed -i "s/^TRAEFIK_HASHED_PASSWORD=.*/TRAEFIK_HASHED_PASSWORD=$HASHED/" "$ENV_FILE"
+  sed -i "s#^TRAEFIK_HASHED_PASSWORD=.*#TRAEFIK_HASHED_PASSWORD='$HASHED'#" "$ENV_FILE"
 else
-  echo "TRAEFIK_HASHED_PASSWORD=$HASHED" >> "$ENV_FILE"
+  echo "TRAEFIK_HASHED_PASSWORD='$HASHED'" >> "$ENV_FILE"
 fi
 
 echo "Updated $ENV_FILE with TRAEFIK_HASHED_PASSWORD."
